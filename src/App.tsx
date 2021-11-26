@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getAll, getCurrentTime } from "./services/api";
+import { getAll, getCurrentTime, postCall } from "./services/api";
+import { DisplayBox } from "./components/DisplayBox";
 
 function App() {
   const queryClient = useQueryClient();
@@ -30,12 +31,16 @@ function App() {
   });
 
   // Mutations
-  /*   const mutation = useMutation(postCall, {
+  const mutation = useMutation(postCall, {
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries('summary')
+      queryClient.invalidateQueries("summary");
     },
-  }) */
+  });
+
+  const timeDisplay3 = useMemo(() => {
+    return timeDisplay2;
+  }, [timeDisplay2]);
 
   useEffect(() => {
     if (isLoadingData) setResult("searching...");
@@ -54,7 +59,18 @@ function App() {
     setTimeout(() => {
       setTimeDisplay2(Date.now());
     }, 1000);
-  }, [timeDisplay2])
+  }, [timeDisplay2]);
+
+  const updateHandler = useCallback(
+    (d: string) => {
+      console.log(`${d} ${timeDisplay}`);
+    },
+    [timeDisplay]
+  );
+
+  const updateHandlerOriginal = (d: string) => {
+    console.log(`${d} ${timeDisplay}`);
+  };
 
   return (
     <div className="App">
@@ -64,10 +80,12 @@ function App() {
         <p>{JSON.stringify(result)}</p>
         <p>{timeDisplay}</p>
         <p>{timeDisplay2}</p>
+        <p>{timeDisplay3}</p>
         <button onClick={() => setIsEnabled((v) => !v)}>
           Toggle Update :{isEnabled ? "True" : "False"}
         </button>
       </header>
+      <DisplayBox data={[]} updateHandler={updateHandlerOriginal} />
     </div>
   );
 }

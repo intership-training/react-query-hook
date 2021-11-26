@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+## Initial project with template typescript
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+`npx create-react-app demo-app --template typescript`
 
-## Available Scripts
+more templates...
 
-In the project directory, you can run:
+https://www.npmjs.com/search?q=cra-template-*
 
-### `npm start`
+## Prerequisite
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Axios ( REST Client )
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+`npm install axios`
 
-### `npm test`
+React Query ( State Management )
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`npm install react-query`
 
-### `npm run build`
+AntD Framework
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`npm install antd`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### COVID-19 Report
 
-### `npm run eject`
+https://covid19.ddc.moph.go.th/
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### CMU Dustboy API
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+https://www.cmuccdc.org/open-api
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Requirement
+- use AntD for UI Framework
+- use Axois for REST Client
+- use React Query to keep state
+- create at least one input to call API
+- create visualization from API data
+- separate components by each section and pass it to props
