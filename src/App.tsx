@@ -4,10 +4,16 @@ import "./App.css";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAll, getCurrentTime, postCall } from "./services/api";
 import { DisplayBox } from "./components/DisplayBox";
+import "antd/dist/antd.css";
+import { Button, Switch, Typography } from "antd";
+import { CovidByProvince } from "./models/user";
 
-function App() {
+const { Text } = Typography;
+
+export const App: React.FC = () => {
   const queryClient = useQueryClient();
-  const [result, setResult] = useState<string>("");
+  const [result, setResult] = useState<CovidByProvince[]>([]);
+
   const [timeDisplay, setTimeDisplay] = useState<number>();
   const [timeDisplay2, setTimeDisplay2] = useState<number>();
   const [isEnabled, setIsEnabled] = useState<boolean>(true);
@@ -18,7 +24,7 @@ function App() {
     getAll,
     {
       enabled: isEnabled,
-      onSuccess: (res) => setResult(res),
+      onSuccess: (res: CovidByProvince[]) => setResult(res),
       onError: (err: any) => setResult(err),
     }
   );
@@ -30,25 +36,17 @@ function App() {
     enabled: isEnabled,
   });
 
-  // Mutations
-  const mutation = useMutation(postCall, {
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries("summary");
-    },
-  });
-
   const timeDisplay3 = useMemo(() => {
     return timeDisplay2;
   }, [timeDisplay2]);
 
   useEffect(() => {
-    if (isLoadingData) setResult("searching...");
+    if (isLoadingData) setResult([]);
   }, [isLoadingData]);
 
   const getAllData = () => {
     try {
-      setResult("");
+      setResult([]);
       getData();
     } catch (err: any) {
       setResult(err);
@@ -56,10 +54,11 @@ function App() {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setTimeDisplay2(Date.now());
-    }, 1000);
-  }, [timeDisplay2]);
+    if (isEnabled)
+      setTimeout(() => {
+        setTimeDisplay2(Date.now());
+      }, 1000);
+  }, [timeDisplay2, isEnabled]);
 
   const updateHandler = useCallback(
     (d: string) => {
@@ -76,18 +75,20 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={getAllData}>Fetch Data</button>
-        <p>{JSON.stringify(result)}</p>
+        <Button onClick={getAllData}>Fetch Data</Button>
+        <Text code>{result && result.length > 0 && result[0].province}</Text>
         <p>{timeDisplay}</p>
         <p>{timeDisplay2}</p>
         <p>{timeDisplay3}</p>
-        <button onClick={() => setIsEnabled((v) => !v)}>
-          Toggle Update :{isEnabled ? "True" : "False"}
-        </button>
+        <Text code>Toggle Update :{isEnabled ? "True" : "False"}</Text>
+        <Switch
+          defaultChecked={isEnabled}
+          onChange={() => setIsEnabled((v) => !v)}
+        />
       </header>
-      <DisplayBox data={[]} updateHandler={updateHandlerOriginal} />
+      {[1, 2, 3].map((x) => (
+        <DisplayBox data={x} updateHandler={updateHandlerOriginal} />
+      ))}
     </div>
   );
-}
-
-export default App;
+};

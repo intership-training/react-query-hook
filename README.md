@@ -32,7 +32,7 @@ https://www.cmuccdc.org/open-api
 
 #### Requirement
 - use AntD for UI Framework
-- use Axois for REST Client
+- use Axios for REST Client
 - use React Query to keep state
 - create at least one input to call API
 - create visualization from API data
