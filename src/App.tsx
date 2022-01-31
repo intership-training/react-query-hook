@@ -7,27 +7,32 @@ import { DisplayBox } from "./components/DisplayBox";
 import "antd/dist/antd.css";
 import { Button, Switch, Typography } from "antd";
 import { CovidByProvince } from "./models/user";
+import { CovidPage } from "./components/CovidPage";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
 export const App: React.FC = () => {
   const queryClient = useQueryClient();
-  const [result, setResult] = useState<CovidByProvince[]>([]);
+  //const [result, setResult] = useState<CovidByProvince[]>([]);
 
   const [timeDisplay, setTimeDisplay] = useState<number>();
   const [timeDisplay2, setTimeDisplay2] = useState<number>();
   const [isEnabled, setIsEnabled] = useState<boolean>(true);
 
   // Queries
-  const { isLoading: isLoadingData, refetch: getData } = useQuery(
-    "summary",
-    getAll,
-    {
-      enabled: isEnabled,
-      onSuccess: (res: CovidByProvince[]) => setResult(res),
-      onError: (err: any) => setResult(err),
-    }
-  );
+  const {
+    isLoading: isLoadingData,
+    refetch: getData,
+    data: result,
+  } = useQuery<CovidByProvince[]>("summary", getAll, {
+    enabled: isEnabled,
+    refetchInterval: 1000,
+    refetchIntervalInBackground: true,
+
+    //onSuccess: (res: CovidByProvince[]) => setResult(res),
+    //onError: (err: any) => setResult(err),
+  });
 
   useQuery("cTime", getCurrentTime, {
     onSuccess: (res: number) => setTimeDisplay(res),
@@ -41,15 +46,16 @@ export const App: React.FC = () => {
   }, [timeDisplay2]);
 
   useEffect(() => {
-    if (isLoadingData) setResult([]);
+    if (isLoadingData) {
+    } //setResult([]);
   }, [isLoadingData]);
 
   const getAllData = () => {
     try {
-      setResult([]);
+      //setResult([]);
       getData();
     } catch (err: any) {
-      setResult(err);
+      //setResult(err);
     }
   };
 
@@ -73,10 +79,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Button onClick={getAllData}>Fetch Data</Button>
-        <Text code>{result && result.length > 0 && result[0].province}</Text>
+        <Text code>{result && result.length > 0 && JSON.stringify(result)}</Text>
         <p>{timeDisplay}</p>
         <p>{timeDisplay2}</p>
         <p>{timeDisplay3}</p>
@@ -88,7 +94,9 @@ export const App: React.FC = () => {
       </header>
       {[1, 2, 3].map((x) => (
         <DisplayBox data={x} updateHandler={updateHandlerOriginal} />
-      ))}
+      ))} */}
+      {isLoadingData && <LoadingOutlined />}
+      {result && <CovidPage data={result} />}
     </div>
   );
 };
