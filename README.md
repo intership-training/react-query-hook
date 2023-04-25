@@ -1,6 +1,6 @@
 ## Initial project with template typescript
 
-`npx create-react-app demo-app --template typescript`
+`yarn create react-app demo-app --template typescript`
 
 more templates...
 
@@ -10,15 +10,15 @@ https://www.npmjs.com/search?q=cra-template-*
 
 Axios ( REST Client )
 
-`npm install axios`
+`yarn add axios`
 
 React Query ( State Management )
 
-`npm install react-query`
+`yarn add react-query`
 
 AntD Framework
 
-`npm install antd`
+`yarn add antd`
 
 ## API
 
