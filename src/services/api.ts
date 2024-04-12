@@ -1,10 +1,15 @@
-import { CovidByProvince } from "../models/user";
+import { DustboyStation, StationValue} from "../models/dustboy";
 import apiClient from "./api/http-common";
 
-export const getAll = async (): Promise<CovidByProvince[]> => {
-  const res = await apiClient.get("/Cases/today-cases-by-provinces");
-  return res.data as CovidByProvince[];
+export const getAllStationList = async (): Promise< DustboyStation[]> => {
+  const res = await apiClient.get("/ccdc/stations");
+  return res.data as  DustboyStation[];
 };
+export const getAllDetailList = async (id: string): Promise< StationValue> => {
+  const res = await apiClient.get(`/ccdc/value/${id}`);
+  return res.data as  StationValue;
+};
+
 
 export const getCurrentTime = (): Promise<number> => {
   return Promise.resolve(Date.now());
